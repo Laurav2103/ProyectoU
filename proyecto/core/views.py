@@ -54,3 +54,13 @@ def eraseArticle(request, id):
     articles = article.objects.get(id=id)
     articles.delete()
     return redirect('home')
+
+
+def search_r(request):
+    if request.method == "POST":
+        searched = request.POST['searched']
+        articles = article.objects.filter(nombreArticulo__contains=searched)
+        return render(request, 'core/search_r.html', {'searched': searched, 'articles': articles})
+
+    else:
+        return render(request, 'core/search_r.html', {})

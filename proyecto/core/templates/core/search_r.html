@@ -1,0 +1,22 @@
+{% extends 'core/home.html' %}
+{% block title %}Search{% endblock title %}
+{% block body %}
+    <center>
+        {% if searched  %}
+            <h1>Your results for {{ searched }} bitch :</h1> <br>
+            {% for article in articles %}
+                {{article}} - {{article.categoria}}
+                   <br> 
+            {% endfor %}
+       
+        {% else %}
+            <h1>No results bitch!</h1>
+        {% endif %}
+        
+    </center>
+    
+
+    
+
+
+{% endblock body %}

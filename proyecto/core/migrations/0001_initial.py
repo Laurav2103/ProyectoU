@@ -14,7 +14,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='article',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('categoria', models.CharField(max_length=80)),
                 ('segmento', models.CharField(max_length=80)),
                 ('producto', models.CharField(max_length=80)),
@@ -40,7 +41,7 @@ class Migration(migrations.Migration):
                 ('agencia', models.CharField(max_length=80)),
                 ('accionesLogros', models.CharField(max_length=80)),
                 ('valorUnitario', models.CharField(max_length=80)),
-                ('valorTotal', models.CharField(max_length=80)),
+                ('catalogacion', models.CharField(max_length=80)),
             ],
         ),
     ]

@@ -15,6 +15,8 @@ class article(models.Model):
     nombreArticulo = models.CharField(max_length=350)
     descripcion = models.CharField(max_length=350)
     descripcionAll = models.CharField(max_length=550)
+    objetivoGeneral = models.CharField(max_length=550)
+    catalogacion = models.CharField(max_length=550)
     """fechaRecibido = models.CharField(max_length=350)
     NombreArchivoPDF = models.CharField(max_length=350)
     fotoNombreImagen = models.CharField(max_length=350)

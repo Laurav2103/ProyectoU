@@ -16,8 +16,8 @@ class articleAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     search_fields = ['nombreArticulo', 'producto']
     # list_display = ['categoria', 'segmento', 'producto' , 'nombreArticulo', 'descripcion', 'descripcionAll', 'fechaRecibido', 'NombreArchivoPDF', 'fotoNombreImagen', 'fechaPublicacion', 'estado', 'autor', 'enlace',
     #  'sabiasQue', 'objetivoGeneral', 'objetivoEspecifico', 'tipoEstudio', 'metodologia', 'tamañoMuestra', 'ciudades', 'fechaCampo', 'conclusiones', 'agencia', 'accionesLogros', 'valorUnitario', 'valorTotal']
-    list_display = ['categoria', 'segmento', 'producto',
-                    'nombreArticulo', 'descripcion', 'descripcionAll']
+    list_display = ['categoria', 'segmento', 'producto', 'nombreArticulo',
+                    'descripcion', 'descripcionAll', 'objetivoGeneral', 'catalogacion']
     resource_class = articleResourse
     list_filter = ['categoria']
     #list_per_page = 10
