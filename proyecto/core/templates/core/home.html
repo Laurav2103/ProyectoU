@@ -43,6 +43,14 @@
                 {% endfor %}
             </tbody>
         </table>
+
+        <h2>Buscador</h2>
+        <form class="d-flex" method=POST action="{% url 'search_r' %}">
+            {% csrf_token %}
+
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="searched">
+            <button class="btn btn-online-secondary" type="submit">Search</button>
+        </form>
     
 </body>
 {% endblock body %}
