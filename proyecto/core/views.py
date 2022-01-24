@@ -1,6 +1,7 @@
 from django.shortcuts import redirect, render
 from .models import article
 from .forms import ArticleForm
+from django.db.models import Q
 # Create your views here.
 
 
@@ -59,7 +60,8 @@ def eraseArticle(request, id):
 def search_r(request):
     if request.method == "POST":
         searched = request.POST['searched']
-        articles = article.objects.filter(nombreArticulo__contains=searched)
+        articles = article.objects.filter(
+            Q(nombreArticulo__icontains=searched) | Q(catalogacion__icontains=searched))
         return render(request, 'core/search_r.html', {'searched': searched, 'articles': articles})
 
     else:
