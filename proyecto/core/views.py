@@ -2,6 +2,9 @@ from django.shortcuts import redirect, render
 from .models import article
 from .forms import ArticleForm
 from django.db.models import Q
+from nltk import SnowballStemmer
+import nltk
+import spacy
 # Create your views here.
 
 
@@ -60,6 +63,18 @@ def eraseArticle(request, id):
 def search_r(request):
     if request.method == "POST":
         searched = request.POST['searched']
+        original = searched
+        # Process nlp
+        logging.info(searched)
+        nlp = spacy.load('es_core_news_sm')
+        doc = nlp(searched)
+        spanishstemmer = SnowballStemmer('spanish')
+        words = [t.orth_ for t in doc if not t.is_punct | t.is_stop]
+        tokens = [t.lower() for t in words if len(t) > 3 and
+                  t.isalpha()]
+        stems = [spanishstemmer.stem(token) for token in tokens]
+        logging.debug(stems)
+        #articles = article.objects.all()
         articles = article.objects.filter(
             Q(nombreArticulo__icontains=searched) | Q(catalogacion__icontains=searched))
         return render(request, 'core/search_r.html', {'searched': searched, 'articles': articles})
