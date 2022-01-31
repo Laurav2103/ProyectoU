@@ -1,3 +1,5 @@
+from email.policy import default
+from multiprocessing.sharedctypes import Value
 from django.db import models
 from django.http import HttpResponse
 from import_export import resources
@@ -17,6 +19,7 @@ class article(models.Model):
     descripcionAll = models.CharField(max_length=550)
     objetivoGeneral = models.CharField(max_length=550)
     catalogacion = models.CharField(max_length=550)
+    catalog_process = models.CharField(max_length=550)
     """fechaRecibido = models.CharField(max_length=350)
     NombreArchivoPDF = models.CharField(max_length=350)
     fotoNombreImagen = models.CharField(max_length=350)
@@ -40,6 +43,12 @@ class article(models.Model):
 
     def __str__(self):
         return self.nombreArticulo
+
+    def __str__(self):
+        convstr = self.catalogacion
+        list(convstr)
+        
+        return 'EL CAMPO ES: %s' % (convstr)
 
 
 """    def import_xlsx(request):
