@@ -62,10 +62,11 @@ def eraseArticle(request, id):
 
 def search_r(request):
     if request.method == "POST":
+
         searched = request.POST['searched']
         original = searched
-        # Process nlp
-        logging.info(searched)
+        # Process nlp ---- word searched---------------------------------------------------------
+        print(searched)
         nlp = spacy.load('es_core_news_sm')
         doc = nlp(searched)
         spanishstemmer = SnowballStemmer('spanish')
@@ -73,10 +74,39 @@ def search_r(request):
         tokens = [t.lower() for t in words if len(t) > 3 and
                   t.isalpha()]
         stems = [spanishstemmer.stem(token) for token in tokens]
-        logging.debug(stems)
+        # print(stems)
+        # Process nlp ----- camp catalogation------------------------------------------------------
+        #catpr = article.objects.get()
+        lista_cat = list(article.objects.all())
+        #var = article.objects.all()
+        # print(lista_cat[2][4])
+        obj = article()
+
+        obj.id = 5
+        obj.categoria = "hola"
+        # print(obj.id)
+        for x in range(0, len(lista_cat)):
+            # print(lista_cat[x])
+            aux = lista_cat[x]
+            # print(aux)
+            #aux = iter(lista_cat)
+            # print(next(aux))
+            strA = "".join(map(str, aux))
+            # print(strA)
+            #aux2 = iter(strA)
+            # print(next(aux2))
+            doc = nlp(strA)
+            spanishstemmer = SnowballStemmer('spanish')
+            words = [t.orth_ for t in doc if not t.is_punct | t.is_stop]
+            tokens = [t.lower() for t in words if len(t) > 3 and
+                      t.isalpha()]
+            stemse = [spanishstemmer.stem(token) for token in tokens]
+            # print(stemse)
+
         #articles = article.objects.all()
         articles = article.objects.filter(
-            Q(nombreArticulo__icontains=searched) | Q(catalogacion__icontains=searched))
+            Q(nombreArticulo__icontains=searched) | Q(catalogacion__icontains=searched))  # catalogacion__icontains
+
         return render(request, 'core/search_r.html', {'searched': searched, 'articles': articles})
 
     else:
