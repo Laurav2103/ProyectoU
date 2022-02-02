@@ -62,11 +62,9 @@ def eraseArticle(request, id):
 
 def search_r(request):
     if request.method == "POST":
-
         searched = request.POST['searched']
-        original = searched
         # Process nlp ---- word searched---------------------------------------------------------
-        print(searched)
+        # print(searched)
         nlp = spacy.load('es_core_news_sm')
         doc = nlp(searched)
         spanishstemmer = SnowballStemmer('spanish')
@@ -74,38 +72,64 @@ def search_r(request):
         tokens = [t.lower() for t in words if len(t) > 3 and
                   t.isalpha()]
         stems = [spanishstemmer.stem(token) for token in tokens]
-        # print(stems)
+        print(stems)
         # Process nlp ----- camp catalogation------------------------------------------------------
-        #catpr = article.objects.get()
         lista_cat = list(article.objects.all())
-        #var = article.objects.all()
-        # print(lista_cat[2][4])
-        obj = article()
 
-        obj.id = 5
-        obj.categoria = "hola"
         # print(obj.id)
-        for x in range(0, len(lista_cat)):
-            # print(lista_cat[x])
+        for x in range(0, len(lista_cat)):  # For process the list
             aux = lista_cat[x]
             # print(aux)
             #aux = iter(lista_cat)
             # print(next(aux))
-            strA = "".join(map(str, aux))
+            strA = "".join(map(str, aux))  # Convert to string
             # print(strA)
             #aux2 = iter(strA)
             # print(next(aux2))
-            doc = nlp(strA)
+            doc = nlp(strA)  # Use to spacy
             spanishstemmer = SnowballStemmer('spanish')
             words = [t.orth_ for t in doc if not t.is_punct | t.is_stop]
             tokens = [t.lower() for t in words if len(t) > 3 and
                       t.isalpha()]
-            stemse = [spanishstemmer.stem(token) for token in tokens]
-            # print(stemse)
+            stemse = [spanishstemmer.stem(token)
+                      for token in tokens]  # word process
+            print(stemse)
+            """for i in range(0, len(stemse)):
+                aux1 = stemse[i]
+                print(aux1)"""
+            """p = article(catalog_process=stemse)
+            p.save()"""
+            # ------------Convert to string -----------
+            #strC = "".join(map(str, stemse))
+            # print(strC)
+            # saveField(request, id=, strC)
 
+            # _----------llenado campo---------------------------------------
+            # article.objects.update_or_create('catalogacion')
+            # article.objects.get(nombreArt="hola")
+
+            # obj=article.objects.create(val=id)
+            # article.objects.filter(pk=obj.pk).update(vcatalog_process=strC)
+            # print(article.objects.get(pk=16))
+            # print(article.id)
+
+            # article.save(update_fields=['catalog_process'])
+            #p.catalog_process = strC
+            # p.save(update_fields=['catalog_process'])
+            # article.save(self=article, force_insert=false, force_update=true,
+            #             using=article, update_fields=p.catalog_process(strC))
+            #articles = article.objects.get(id=id)
+            #articles = article(catalog_process=strC)
+            # p.id
+            # articles.save()
+            """ to_edit = article.objects.get(id=13)
+            to_edit.catalog_process = strC
+            to_edit.save()"""
         #articles = article.objects.all()
+        auxbus = searched
+        searched = stems
         articles = article.objects.filter(
-            Q(nombreArticulo__icontains=searched) | Q(catalogacion__icontains=searched))  # catalogacion__icontains
+            Q(nombreArticulo__icontains=searched) | Q(catalog_process__icontains=searched) | Q(nombreArticulo__icontains=auxbus) | Q(catalogacion__icontains=auxbus))  # catalogacion__icontains
 
         return render(request, 'core/search_r.html', {'searched': searched, 'articles': articles})
 
