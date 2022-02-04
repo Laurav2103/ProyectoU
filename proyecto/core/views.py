@@ -135,3 +135,28 @@ def search_r(request):
 
     else:
         return render(request, 'core/search_r.html', {})
+
+    def synonyms(word):
+
+    url = 'http://www.wordreference.com/sinonimos/'
+    print("OLA CMO ESTAS")
+    #url = 'http://www.sinonimosonline.com/'
+    enlace = word
+    print(enlace)
+    buscar = url+enlace
+    resp = requests.get(buscar)
+    bs = BeautifulSoup(resp.text, 'lxml')
+    lista = bs.find_all(class_='trans clickable')
+    aux2 = []
+    aux = []
+
+    for sin in lista:
+        sino = sin.find_all('li')
+        # print(sino)
+        aux = sino[0].next_element
+    strx = "".join(map(str, aux))
+    print(strx)
+    #list_aux = list(strx)
+    # print(list_aux)
+
+    return strx
