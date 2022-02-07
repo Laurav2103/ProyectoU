@@ -1,9 +1,14 @@
 from email.policy import default
+from enum import Flag
 from multiprocessing.sharedctypes import Value
+from xml.dom.expatbuilder import FilterVisibilityController
 from django.db import models
 from django.http import HttpResponse
 from import_export import resources
 from sqlalchemy import true
+from collections import Iterable
+
+#from proyecto.core.views import synonyms
 # Create your models here.
 
 
@@ -20,6 +25,8 @@ class article(models.Model):
     objetivoGeneral = models.CharField(max_length=550)
     catalogacion = models.CharField(max_length=550)
     catalog_process = models.CharField(max_length=550)
+    titleProcess = models.CharField(max_length=550)
+    synonyms = models.CharField(max_length=550)
     """fechaRecibido = models.CharField(max_length=350)
     NombreArchivoPDF = models.CharField(max_length=350)
     fotoNombreImagen = models.CharField(max_length=350)
@@ -44,22 +51,30 @@ class article(models.Model):
     def __str__(self):
         return self.nombreArticulo
 
-    def __str__(self):
+    """def __str__(self):
         convstr = self.catalogacion
         list(convstr)
-        
-        return 'EL CAMPO ES: %s' % (convstr)
 
+        return 'EL CAMPO ES: %s' % (convstr)"""
 
-"""    def import_xlsx(request):
-        with open("archivo.xlsx", "r") as xlsx_file:
-            import tablib
-            article_resource=resources.modelresource_factory(model=article)()
-            dataset=tablib.Dataset(headers=[field.name for field in article.meta.fields]).load(xlsx_file)
-            result=article_resource.import_data(dataset, dry_run=True)
-            if not result.has_errors():
-                article_resource.import_data(dataset, dry_run=False)
-            return HttpResponse(
-                "Successfully imported"
-            )
-            """
+    def __iter__(self):
+
+        convstr = self.nombreArticulo
+        convstr2 = self.catalogacion
+        list(convstr)
+        list(convstr2)
+        # return iter(convstr)
+        return iter(convstr), iter(convstr2)
+
+    def get_model_fields(self):
+        return self._meta.fields
+
+    """def __iter__(self):
+        convs = self.synonyms
+        list(convs)
+        return iter(convs)"""
+
+    def save(self, *args, **kwargs):
+        print('save() is called.')
+        super(article, self).save(*args, **kwargs)
+       
