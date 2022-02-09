@@ -1,12 +1,19 @@
 from email.policy import default
 from enum import Flag
 from multiprocessing.sharedctypes import Value
+from os import link
 from xml.dom.expatbuilder import FilterVisibilityController
+from django import urls
 from django.db import models
 from django.http import HttpResponse
 from import_export import resources
 from sqlalchemy import true
 from collections import Iterable
+import spacy
+import nltk
+from nltk import SnowballStemmer
+import unicodedata
+#from core.views import nlpField
 
 #from proyecto.core.views import synonyms
 # Create your models here.
@@ -27,6 +34,7 @@ class article(models.Model):
     catalog_process = models.CharField(max_length=550)
     titleProcess = models.CharField(max_length=550)
     synonyms = models.CharField(max_length=550)
+    link = models.URLField(null=True, blank=True)
     """fechaRecibido = models.CharField(max_length=350)
     NombreArchivoPDF = models.CharField(max_length=350)
     fotoNombreImagen = models.CharField(max_length=350)
@@ -48,14 +56,12 @@ class article(models.Model):
     valorUnitario = models.CharField(max_length=350)
     valorTotal = models.CharField(max_length=350)"""
 
+    """class Meta:
+        verbose_name = "proyecto"
+        verbose_name_plural = "proyectos" """
+
     def __str__(self):
         return self.nombreArticulo
-
-    """def __str__(self):
-        convstr = self.catalogacion
-        list(convstr)
-
-        return 'EL CAMPO ES: %s' % (convstr)"""
 
     def __iter__(self):
 
@@ -77,4 +83,8 @@ class article(models.Model):
     def save(self, *args, **kwargs):
         print('save() is called.')
         super(article, self).save(*args, **kwargs)
-       
+        """articles = article.objects.all()
+        p = article.save()
+        print(p.id)
+        id = p.id
+        article.updateFields(id)"""
